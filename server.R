@@ -65,7 +65,8 @@ shinyServer(
                        'if you wish to add this to your workout.')
             })
         
-        output$legsdisplay <- renderTable({
+        tableUpdate <- reactive({
+            
             input$addLeg
             leg <<- leg + 1
             isolate(totTime <<- totTime + input$DurationSelect)
@@ -92,25 +93,32 @@ shinyServer(
                 totTime <<- 0
                 beats <<- 0
             }
-            if (nrow(legs) == 1) {
-                legs
+            
+            legs
+        }) 
+        
+        output$legsdisplay <- renderTable({
+            mylegs <- tableUpdate()
+                
+            if (nrow(mylegs) == 1) {
+                mylegs
             }
             else {
-                legs[2:nrow(legs),]   
+                mylegs[2:nrow(mylegs),]   
             }
         }, digits = 0)
         
         output$plots <- renderPlot({
-            input$addLeg
-            input$resetLegs
             
-            if (nrow(legs) == 1) {
+            mylegs <- tableUpdate()
+            
+            if (nrow(mylegs) == 1) {
                 p1 <- ggplot(aes(x = Elapsed.Time, y = Total.Calories), 
-                             data = legs) + geom_point(size = 4)
+                             data = mylegs) + geom_point(size = 4)
             }
             else {
                 p1 <- ggplot(aes(x = Elapsed.Time, y = Total.Calories), 
-                             data = legs) + 
+                             data = mylegs) + 
                     geom_line(size = 2, color = 'navy') + geom_point(size = 4)
             }
             
