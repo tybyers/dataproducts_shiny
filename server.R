@@ -104,16 +104,24 @@ shinyServer(
             input$addLeg
             input$resetLegs
             
+            if (nrow(legs) == 1) {
+                p1 <- ggplot(aes(x = Elapsed.Time, y = Total.Calories), 
+                             data = legs) + geom_point(size = 4)
+            }
+            else {
+                p1 <- ggplot(aes(x = Elapsed.Time, y = Total.Calories), 
+                             data = legs) + 
+                    geom_line(size = 2, color = 'navy') + geom_point(size = 4)
+            }
             
-            p1 <- ggplot(aes(x = Elapsed.Time, y = Total.Calories), data = legs) + 
-                geom_line(size = 2, color = 'navy') + geom_point(size = 4) + 
-                xlab('Elapsed Time (min)') + ylab('Total Calories Burned') +
+            p1 <- p1 + xlab('Elapsed Time (min)') + 
+                ylab('Total Calories Burned') +
                 ggtitle('Calories Burned During Workout') +
                 theme(plot.title=element_text(family="Times", 
                                               face="bold", size=20),
                       axis.title=element_text(family = 'Times', face = 'bold',
                                           size = 16))
-            p1
+            print(p1)
 #             p2 <- ggplot(aes(x = Elapsed.Time, y = HeartRate.Avg), data = legs) + 
 #                 geom_line()
 #             grid.arrange(p1, p2, ncol = 2)

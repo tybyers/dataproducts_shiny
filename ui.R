@@ -67,7 +67,11 @@ shinyUI(fluidPage(
                      'the amount of time elapsed and calories burned during',
                      'that leg of the workout.'),
             helpText('If you make a mistake and/or would just like to start',
-                     'over, hit the \'Reset Workout\' button.')
+                     'over, hit the \'Reset Workout\' button.'),
+            br(),
+            helpText('Source of equation to calculate calories burned: 
+                     Journal of Sports Sciences: ', 
+                     a('http://www.braydenwm.com/cal_vs_hr_ref_paper.pdf'))
             
             ),
         
@@ -82,8 +86,6 @@ shinyUI(fluidPage(
             strong(textOutput('aboutexercise')),
             br(),
             strong(textOutput('calburned')),
-            br(),
-            br(),
             plotOutput('plots', width = 800, height = 250),
             br(),
             tableOutput('legsdisplay')
